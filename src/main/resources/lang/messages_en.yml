@@ -5,6 +5,11 @@ general:
   players-only: "<prefix><error><cross></error> <text>Only players can use this command."
   update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>is available <muted>(installed: <current>)</muted> <link>"
 npc:
+  import-usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅ</muted> <primary>/npc import <source> <muted>| sources: <text><sources>"
+  import-missing: "<prefix><error><cross></error> <text>Folder of <secondary><plugin></secondary> not found: <muted><folder>"
+  import-started: "<prefix><secondary>⌛</secondary> <text>Importing from <secondary><plugin></secondary>..."
+  import-done: "<prefix><success><check></success> <text>Import from <secondary><plugin></secondary> done: <secondary><amount></secondary> NPCs. <muted>Disable the old plugin to avoid duplicates."
+  import-warnings: "<prefix><warning>⚠</warning> <secondary><amount></secondary> <text>warning(s), details in the console."
   unavailable: "<prefix><error><cross></error> <text>The NPC system is unavailable on this server, check the console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅ</muted> <primary>/npc <reload|list|info|create|delete|movehere|tp|rename|skin|copy|enable|disable|stats> <muted>| <primary>/npc create <npc> [type] <muted>| <primary>/npc skin <npc> <player|url|mirror|none> <muted>| <primary>/npc copy <npc> <new>"
   reloaded: "<prefix><success><check></success> <text>NPCs reloaded <muted><pipe></muted> <text><active></text> <muted>active,</muted> <text><spawned></text> <muted>added,</muted> <text><respawned></text> <muted>updated,</muted> <text><removed></text> <muted>removed,</muted> <text><kept></text> <muted>unchanged, of which</muted> <text><restyled></text> <muted>had their name style adjusted"

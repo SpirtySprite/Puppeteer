@@ -2,10 +2,13 @@ package com.kirugoldzzzz.puppeteer;
 
 import com.kirugoldzzzz.puppeteer.common.command.NexusCommand;
 import com.kirugoldzzzz.puppeteer.common.config.Sections;
+import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
+import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
 import com.kirugoldzzzz.puppeteer.common.text.Messages;
 import com.kirugoldzzzz.puppeteer.common.text.Mini;
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
+import com.kirugoldzzzz.puppeteer.importer.NpcSource;
 import net.folianpc.api.Stats;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
@@ -17,6 +20,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -30,7 +34,7 @@ public final class NpcCommand extends NexusCommand {
 
     private static final String PERMISSION = "puppeteer.admin.npc";
     private static final List<String> ACTIONS = List.of("reload", "list", "info", "create", "delete",
-            "movehere", "tp", "rename", "skin", "copy", "enable", "disable", "stats");
+            "movehere", "tp", "rename", "skin", "copy", "enable", "disable", "stats", "import");
     private static final List<String> ID_ARGUMENT = List.of("info", "delete", "movehere", "tp", "rename",
             "skin", "copy", "enable", "disable");
     private static final List<String> SKIN_OPTIONS = List.of("mirror", "none");
@@ -73,8 +77,48 @@ public final class NpcCommand extends NexusCommand {
             case "enable", "activer" -> toggle(sender, args, true);
             case "disable", "desactiver" -> toggle(sender, args, false);
             case "stats" -> stats(sender);
+            case "import", "importer" -> importFrom(sender, args);
             default -> Messages.send(sender, "npc.usage");
         }
+    }
+
+    private void importFrom(CommandSender sender, String[] args) {
+        Optional<NpcSource> source = args.length < 2 ? Optional.empty() : NpcSource.byId(args[1]);
+        if (source.isEmpty()) {
+            Messages.send(sender, "npc.import-usage", Mini.value("sources",
+                    String.join(", ", NpcSource.ALL.stream().map(NpcSource::id).toList())));
+            return;
+        }
+        File folder = new File(Bukkit.getPluginsFolder(), source.get().plugin());
+        if (!folder.isDirectory()) {
+            Messages.send(sender, "npc.import-missing", Mini.value("plugin", source.get().plugin()),
+                    Mini.value("folder", folder.getPath()));
+            return;
+        }
+        Messages.send(sender, "npc.import-started", Mini.value("plugin", source.get().plugin()));
+        Scheduling.async(() -> {
+            NpcSource.Result result = source.get().read(folder);
+            List<String> warnings = new ArrayList<>(result.warnings());
+            List<String> written = new ArrayList<>();
+            service.edit(root -> {
+                for (NpcSource.Npc npc : result.npcs()) {
+                    if (root.contains(path(npc.id()))) {
+                        warnings.add(npc.id() + Tr.t(" : un PNJ porte déjà cet identifiant, il est ignoré"));
+                        continue;
+                    }
+                    root.createSection(path(npc.id()), npc.section());
+                    written.add(npc.id());
+                }
+            });
+            for (String warning : warnings) {
+                NexusLog.warn(LogTopic.NPC, "[" + result.source() + "] " + warning);
+            }
+            Messages.send(sender, "npc.import-done", Mini.value("plugin", source.get().plugin()),
+                    Mini.value("amount", String.valueOf(written.size())));
+            if (!warnings.isEmpty()) {
+                Messages.send(sender, "npc.import-warnings", Mini.value("amount", String.valueOf(warnings.size())));
+            }
+        });
     }
 
     public void onReload(Runnable action) {
@@ -379,6 +423,9 @@ public final class NpcCommand extends NexusCommand {
         String action = args[0].toLowerCase(Locale.ROOT);
         if (args.length == 2 && ID_ARGUMENT.contains(action)) {
             return match(service.ids(), args[1]);
+        }
+        if (args.length == 2 && action.equals("import")) {
+            return match(NpcSource.ALL.stream().map(NpcSource::id).toList(), args[1]);
         }
         if (args.length == 3 && action.equals("create")) {
             return match(TYPES, args[2]);

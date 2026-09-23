@@ -5,6 +5,11 @@ general:
   players-only: "<prefix><error><cross></error> <text>Seuls les joueurs peuvent utiliser cette commande."
   update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>est disponible <muted>(installée : <current>)</muted> <link>"
 npc:
+  import-usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/npc import <source> <muted>| sources : <text><sources>"
+  import-missing: "<prefix><error><cross></error> <text>Dossier de <secondary><plugin></secondary> introuvable : <muted><folder>"
+  import-started: "<prefix><secondary>⌛</secondary> <text>Import depuis <secondary><plugin></secondary> en cours..."
+  import-done: "<prefix><success><check></success> <text>Import de <secondary><plugin></secondary> terminé : <secondary><amount></secondary> PNJ. <muted>Désactivez l'ancien plugin pour éviter les doublons."
+  import-warnings: "<prefix><warning>⚠</warning> <secondary><amount></secondary> <text>avertissement(s), détails dans la console."
   unavailable: "<prefix><error><cross></error> <text>Le système de PNJ est indisponible sur ce serveur, consultez la console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/npc <reload|list|info|create|delete|movehere|tp|rename|skin|copy|enable|disable|stats> <muted>| <primary>/npc create <pnj> [type] <muted>| <primary>/npc skin <pnj> <joueur|url|mirror|none> <muted>| <primary>/npc copy <pnj> <nouveau>"
   reloaded: "<prefix><success><check></success> <text>PNJ rechargés <muted><pipe></muted> <text><active></text> <muted>actifs,</muted> <text><spawned></text> <muted>ajoutés,</muted> <text><respawned></text> <muted>mis à jour,</muted> <text><removed></text> <muted>retirés,</muted> <text><kept></text> <muted>inchangés, dont</muted> <text><restyled></text> <muted>au style de nom ajusté"
