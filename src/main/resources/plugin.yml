@@ -4,15 +4,15 @@ main: com.kirugoldzzzz.puppeteer.Puppeteer
 api-version: '1.21'
 folia-supported: true
 author: KiruGoldzZz
-description: "PNJ configurables pour Paper et Folia"
+description: "Packet-based, configurable NPCs for Paper and Folia"
 softdepend: [PlaceholderAPI, Vault]
 commands:
   npc:
-    description: Gérer les PNJ
+    description: Manage NPCs
     usage: /npc <reload|list|info|create|delete|movehere|tp|rename|skin|copy|enable|disable|stats>
     permission: puppeteer.admin.npc
     aliases: [npcs, pnj]
 permissions:
   puppeteer.admin.npc:
-    description: Créer, modifier et recharger les PNJ
+    description: Create, edit and reload NPCs
     default: op

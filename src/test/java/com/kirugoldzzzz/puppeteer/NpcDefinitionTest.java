@@ -249,11 +249,12 @@ class NpcDefinitionTest {
         assertNotEquals(first, NpcDefinition.fingerprint(npc(yaml.replace("SWING", "MESSAGE"))));
     }
 
-    @Test
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {"npcs.yml", "lang/npcs_fr.yml"})
     @DisplayName("Le npcs.yml livré se charge sans aucun avertissement")
-    void shippedConfigurationIsClean() throws IOException {
+    void shippedConfigurationIsClean(String file) throws IOException {
         YamlConfiguration configuration;
-        try (Reader reader = Files.newBufferedReader(Path.of("src", "main", "resources", "npcs.yml"),
+        try (Reader reader = Files.newBufferedReader(Path.of("src", "main", "resources").resolve(file),
                 StandardCharsets.UTF_8)) {
             configuration = YamlConfiguration.loadConfiguration(reader);
         }
@@ -282,7 +283,7 @@ class NpcDefinitionTest {
     @DisplayName("Chaque clé de message utilisée par les PNJ existe dans messages.yml")
     void messageKeysExist() throws IOException {
         YamlConfiguration messages;
-        try (Reader reader = Files.newBufferedReader(Path.of("src", "main", "resources", "messages.yml"),
+        try (Reader reader = Files.newBufferedReader(Path.of("src", "main", "resources", "lang", "messages_fr.yml"),
                 StandardCharsets.UTF_8)) {
             messages = YamlConfiguration.loadConfiguration(reader);
         }
