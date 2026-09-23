@@ -56,10 +56,10 @@ public record NpcSkinSource(Kind kind, String value, String signature, boolean m
             return Tr.t("reflet du joueur");
         }
         return switch (kind) {
-            case NONE -> "par défaut";
-            case PLAYER -> "joueur " + value;
-            case URL -> "image distante";
-            case TEXTURE -> "texture signée";
+            case NONE -> Tr.t("par défaut");
+            case PLAYER -> Tr.t("joueur ") + value;
+            case URL -> Tr.t("image distante");
+            case TEXTURE -> Tr.t("texture signée");
         };
     }
 

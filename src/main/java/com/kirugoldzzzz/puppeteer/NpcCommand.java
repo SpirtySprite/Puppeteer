@@ -118,7 +118,7 @@ public final class NpcCommand extends NexusCommand {
                 Mini.value("right", String.valueOf(definition.actionCount(NpcTrigger.RIGHT))),
                 Mini.value("both", String.valueOf(definition.actionCount(NpcTrigger.BOTH))),
                 Mini.value("cooldown", String.valueOf(definition.cooldownMillis())),
-                Mini.value("permission", definition.permission() == null ? "aucune" : definition.permission()))
+                Mini.value("permission", definition.permission() == null ? Tr.t("aucune") : definition.permission()))
                 .forEach(sender::sendMessage);
     }
 
@@ -272,7 +272,7 @@ public final class NpcCommand extends NexusCommand {
                 Mini.value("shows", String.valueOf(stats.viewerShows())),
                 Mini.value("packets", String.valueOf(stats.packetsSent())),
                 Mini.value("tick", String.format(Locale.ROOT, "%.3f", stats.lastTickMillis())),
-                Mini.value("missing", missing.isEmpty() ? "aucune" : String.join(", ", missing)),
+                Mini.value("missing", missing.isEmpty() ? Tr.t("aucune") : String.join(", ", missing)),
                 Mini.value("warnings", String.valueOf(service.lastWarnings().size())))
                 .forEach(sender::sendMessage);
     }

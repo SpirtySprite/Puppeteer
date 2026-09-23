@@ -45,7 +45,7 @@ public final class VaultEconomy {
         if (current != null) {
             return current;
         }
-        if (Bukkit.getServer() == null || Bukkit.getPluginManager().getPlugin(Tr.t("Vault")) == null) {
+        if (Bukkit.getServer() == null || Bukkit.getPluginManager().getPlugin("Vault") == null) {
             return null;
         }
         RegisteredServiceProvider<Economy> registration = Bukkit.getServicesManager().getRegistration(Economy.class);
