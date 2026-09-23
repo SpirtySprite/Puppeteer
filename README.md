@@ -1,119 +1,136 @@
 # Puppeteer
 
-PNJ pour Paper et Folia 1.21, entièrement décrits dans `npcs.yml`. Ils n'existent qu'en paquets :
-aucune entité réelle, aucun tick serveur. Joueurs avec skin, villageois, chats, zombies ou toute
-entité vivante, avec lignes de texte, équipement, poses, animations et actions au clic.
+Packet-based NPCs for Paper and Folia 1.21 and 26.x, fully described in `npcs.yml`. They exist only as
+packets: no real entity, no server tick, Folia-native. Players with skins, villagers, cats, zombies or
+any living entity, with nametag lines, equipment, poses, animations and click actions.
 
-`/npc reload` compare chaque PNJ à sa version en place et ne recrée que ceux qui ont changé. Un PNJ
-dont le monde n'est pas encore chargé attend et apparaît tout seul au chargement du monde. Les PNJ
-réservés à une permission ne sont visibles que par les joueurs qui l'ont, sans délai.
+`/npc reload` compares every NPC with the live one and only recreates those that changed. An NPC whose
+world is not loaded yet waits and appears on its own when the world loads. NPCs restricted to a
+permission are only visible to players who have it, with no delay.
 
 ## Installation
 
-1. Placez `Puppeteer.jar` dans `plugins/`.
-2. Démarrez le serveur : `npcs.yml` (avec quelques exemples désactivés) et `messages.yml` sont créés
-   dans `plugins/Puppeteer/`.
+1. Drop `Puppeteer.jar` into `plugins/`.
+2. Start the server: `config.yml`, `npcs.yml` (with a few disabled examples) and the language files are
+   created in `plugins/Puppeteer/`.
 
-Optionnel : PlaceholderAPI (placeholders dans les textes), Vault (actions `GIVE_MONEY` et `TAKE_MONEY`).
+Optional: PlaceholderAPI (placeholders in texts), Vault (`GIVE_MONEY` and `TAKE_MONEY` actions).
 
-## Reglages globaux
+## Languages
 
-| Cle | Defaut | Effet |
+Puppeteer ships in English and French. Set the language in `config.yml`:
+
+```yaml
+language: en
+```
+
+Use `fr` for French. On first start, the example `npcs.yml` is written in the chosen language.
+
+- `lang/messages_<language>.yml` holds every chat message. Edit it freely.
+- `lang/<language>.yml` translates the menu and item texts. Add or override any entry to customise a
+  label. Missing entries fall back to the original text.
+
+To add a language, copy `lang/messages_en.yml` and `lang/en.yml` to `messages_<code>.yml` and
+`<code>.yml`, translate them, and set `language: <code>`. Changing the language needs a restart.
+
+## Global settings
+
+| Key | Default | Effect |
 |---|---|---|
-| `settings.view-distance` | `48` | distance d'affichage en blocs, entre 8 et 256 |
-| `settings.default-cooldown-ms` | `500` | delai entre deux clics quand un PNJ n'en precise pas |
-| `settings.skin-cache-minutes` | `30` | duree de conservation des skins telecharges |
-| `settings.debug` | `false` | journal detaille de FoliaNPC |
-| `settings.nametag-style` | vanilla | style par defaut des lignes au-dessus des PNJ, memes cles que `nametag-style` |
+| `settings.view-distance` | `48` | display distance in blocks, between 8 and 256 |
+| `settings.default-cooldown-ms` | `500` | delay between two clicks when an NPC does not set one |
+| `settings.skin-cache-minutes` | `30` | how long downloaded skins are kept |
+| `settings.debug` | `false` | verbose FoliaNPC logging |
+| `settings.nametag-style` | vanilla | default style of the lines above NPCs, same keys as `nametag-style` |
 
-## Options d'un PNJ
+## NPC options
 
-Chaque PNJ vit sous `npcs.<id>`, avec un identifiant en minuscules, chiffres, `_` et `-`.
-Seul `location.world` est obligatoire.
+Every NPC lives under `npcs.<id>`, with an id made of lowercase letters, digits, `_` and `-`. Only
+`location.world` is required.
 
-| Cle | Defaut | Effet |
+| Key | Default | Effect |
 |---|---|---|
-| `enabled` | `true` | `false` garde la definition sans afficher le PNJ |
-| `name` | l'identifiant | nom interne, repris par `%npc%` |
-| `type` | `PLAYER` | `PLAYER` ou toute entite vivante (`VILLAGER`, `CAT`, `ZOMBIE`...) |
+| `enabled` | `true` | `false` keeps the definition without showing the NPC |
+| `name` | the id | internal name, used by `%npc%` |
+| `type` | `PLAYER` | `PLAYER` or any living entity (`VILLAGER`, `CAT`, `ZOMBIE`...) |
 | `location` | | `world`, `x`, `y`, `z`, `yaw`, `pitch` |
-| `skin` | aucun | pseudo, lien `https://`, `mirror`, ou section `value`/`signature`, `url`, `player`, `mirror` |
-| `nametag` | aucun | lignes au-dessus du PNJ, MiniMessage ou codes `&`, placeholders par joueur |
-| `nametag-refresh-ticks` | `0` | rafraichit les lignes pour les placeholders qui bougent |
-| `nametag-style.background` | `#000000` | couleur du fond des lignes, `#RRGGBB` ou un nom (`black`, `dark_purple`...) |
-| `nametag-style.background-opacity` | `25` | opacite du fond en pourcent, `0` retire le fond |
-| `nametag-style.text-opacity` | `100` | opacite du texte en pourcent, en dessous de `10` le texte disparait |
-| `nametag-style.shadow` | `false` | ombre sous le texte |
-| `nametag-style.see-through` | `false` | lignes visibles a travers les blocs |
-| `look-at-players` | `true` | le PNJ suit du regard le joueur le plus proche |
-| `view-distance` | global | distance propre a ce PNJ, `0` reprend la valeur globale |
-| `cooldown-ms` | global | delai entre deux clics d'un meme joueur |
-| `permission` | aucune | seuls les joueurs ayant la permission voient le PNJ |
+| `skin` | none | player name, `https://` link, `mirror`, or a `value`/`signature`, `url`, `player`, `mirror` section |
+| `nametag` | none | lines above the NPC, MiniMessage or `&` codes, per player placeholders |
+| `nametag-refresh-ticks` | `0` | refreshes the lines for placeholders that change |
+| `nametag-style.background` | `#000000` | line background colour, `#RRGGBB` or a name (`black`, `dark_purple`...) |
+| `nametag-style.background-opacity` | `25` | background opacity in percent, `0` removes it |
+| `nametag-style.text-opacity` | `100` | text opacity in percent, below `10` the text disappears |
+| `nametag-style.shadow` | `false` | text shadow |
+| `nametag-style.see-through` | `false` | lines visible through blocks |
+| `look-at-players` | `true` | the NPC follows the nearest player with its eyes |
+| `view-distance` | global | distance for this NPC, `0` uses the global value |
+| `cooldown-ms` | global | delay between two clicks from the same player |
+| `permission` | none | only players with the permission see the NPC |
 | `pose` | `STANDING` | `STANDING`, `CROUCHING`, `SLEEPING`, `SWIMMING`, `SITTING`, `FALL_FLYING`, `DYING` |
-| `baby` | `false` | version bebe des mobs |
-| `variant` | | nombre (lapin, perroquet, axolotl, cheval) ou nom (`black` pour un chat, un loup, une grenouille) |
-| `villager.profession`, `villager.type`, `villager.level` | | apparence des villageois, niveau 1 a 5 |
-| `appearance.glowing`, `appearance.glow-color` | `false` | contour lumineux et sa couleur (`aqua`, `gold`...) |
-| `appearance.invisible` | `false` | corps invisible, equipement et nom visibles |
-| `appearance.scale` | `1.0` | taille entre 0.1 et 16 |
-| `appearance.skin-layers` | `true` | couches exterieures du skin |
-| `appearance.collidable` | `true` | les joueurs peuvent pousser contre le PNJ |
-| `appearance.show-in-tab` | `false` | apparait dans la liste des joueurs |
-| `appearance.nametag-visible` | auto | force l'affichage du nom vanilla |
-| `equipment.<emplacement>` | | matiere ou objet complet (`material`, `name`, `lore`, `glow`, `item-model`...) pour `hand`, `off-hand`, `head`, `chest`, `legs`, `feet`, `body` |
-| `actions` | | liste d'actions executees au clic |
+| `baby` | `false` | baby version of mobs |
+| `variant` | | number (rabbit, parrot, axolotl, horse) or name (`black` for a cat, a wolf, a frog) |
+| `villager.profession`, `villager.type`, `villager.level` | | villager appearance, level 1 to 5 |
+| `appearance.glowing`, `appearance.glow-color` | `false` | glowing outline and its colour (`aqua`, `gold`...) |
+| `appearance.invisible` | `false` | invisible body, equipment and name still visible |
+| `appearance.scale` | `1.0` | size between 0.1 and 16 |
+| `appearance.skin-layers` | `true` | outer skin layers |
+| `appearance.collidable` | `true` | players can push against the NPC |
+| `appearance.show-in-tab` | `false` | appears in the player list |
+| `appearance.nametag-visible` | auto | forces the vanilla name to show |
+| `equipment.<slot>` | | material or full item (`material`, `name`, `lore`, `glow`, `item-model`...) for `hand`, `off-hand`, `head`, `chest`, `legs`, `feet`, `body` |
+| `actions` | | list of actions run on click |
 
 ## Actions
 
-Chaque action choisit son clic et son type. Les actions d'un meme clic s'executent dans l'ordre ;
-`delay` compte en ticks depuis le clic. Une action `TAKE_MONEY` ou `REQUIRE_PERMISSION` qui
-echoue annule toutes les suivantes.
+Every action picks its click and its type. Actions on the same click run in order; `delay` counts in
+ticks from the click. A `TAKE_MONEY` or `REQUIRE_PERMISSION` action that fails cancels all the
+following ones.
 
-| Cle | Defaut | Effet |
+| Key | Default | Effect |
 |---|---|---|
-| `click` | `RIGHT` | `LEFT`, `RIGHT` ou `BOTH` (alias `GAUCHE`, `DROIT`, `LES_DEUX`) |
-| `sneak` | tous | `true` accroupi seulement, `false` debout seulement |
-| `type` | | voir ci-dessous |
-| `value` | | texte, commande, cle ou destination selon le type ; une liste donne plusieurs lignes |
-| `delay` | `0` | attente en ticks avant l'action |
-| `permission` | aucune | action ignoree sans la permission, les suivantes continuent |
-| `deny-message` | | message si la permission ou le paiement manque |
-| `amount` | | montant, niveau d'effet ou nombre de particules |
-| `duration` | `60` ou `200` | ticks d'affichage d'un titre ou duree d'un effet |
-| `subtitle`, `fade-in`, `fade-out` | `10`, `20` | reglages des titres |
-| `volume`, `pitch` | `1.0` | reglages des sons |
+| `click` | `RIGHT` | `LEFT`, `RIGHT` or `BOTH` |
+| `sneak` | any | `true` sneaking only, `false` standing only |
+| `type` | | see below |
+| `value` | | text, command, key or destination depending on the type; a list gives several lines |
+| `delay` | `0` | wait in ticks before the action |
+| `permission` | none | action skipped without the permission, the following ones continue |
+| `deny-message` | | message when the permission or the payment is missing |
+| `amount` | | amount, effect level or number of particles |
+| `duration` | `60` or `200` | ticks a title stays or an effect lasts |
+| `subtitle`, `fade-in`, `fade-out` | `10`, `20` | title settings |
+| `volume`, `pitch` | `1.0` | sound settings |
 
-| Type | Valeur | Effet |
+| Type | Value | Effect |
 |---|---|---|
-| `MESSAGE` | texte | message au joueur |
-| `BROADCAST` | texte | message a tout le serveur |
-| `ACTIONBAR` | texte | barre d'action du joueur |
-| `TITLE` | texte | titre, avec `subtitle` |
-| `PLAYER_COMMAND` | commande | executee par le joueur |
-| `CONSOLE_COMMAND` | commande | executee par la console |
-| `SOUND` | `entity.player.levelup` ou `ENTITY_PLAYER_LEVELUP` | son pour le joueur, sons de pack acceptes |
-| `TELEPORT` | `monde x y z [yaw pitch]` | teleportation |
-| `SERVER` | nom du serveur | envoi vers un autre serveur du proxy |
-| `EFFECT` | `speed`, `haste`... | effet de potion, `amount` pour le niveau |
-| `PARTICLE` | `HAPPY_VILLAGER`, `HEART`... | particules sans donnees, visibles par le joueur |
-| `GIVE_MONEY` | message facultatif | credite `amount` |
-| `TAKE_MONEY` | message facultatif | debite `amount`, sinon bloque la suite |
-| `REQUIRE_PERMISSION` | permission | bloque la suite sans la permission |
-| `SWING` | | le PNJ balance le bras |
+| `MESSAGE` | text | message to the player |
+| `BROADCAST` | text | message to the whole server |
+| `ACTIONBAR` | text | player's action bar |
+| `TITLE` | text | title, with `subtitle` |
+| `PLAYER_COMMAND` | command | run by the player |
+| `CONSOLE_COMMAND` | command | run by the console |
+| `SOUND` | `entity.player.levelup` or `ENTITY_PLAYER_LEVELUP` | sound for the player, resource pack sounds accepted |
+| `TELEPORT` | `world x y z [yaw pitch]` | teleport |
+| `SERVER` | server name | sends the player to another proxy server |
+| `EFFECT` | `speed`, `haste`... | potion effect, `amount` for the level |
+| `PARTICLE` | `HAPPY_VILLAGER`, `HEART`... | particles without extra data, visible to the player |
+| `GIVE_MONEY` | optional message | credits `amount` |
+| `TAKE_MONEY` | optional message | debits `amount`, otherwise blocks the rest |
+| `REQUIRE_PERMISSION` | permission | blocks the rest without the permission |
+| `SWING` | | the NPC swings its arm |
 
-Les textes acceptent `%player%`, `%npc%` et, si PlaceholderAPI est present, tous ses placeholders.
+Texts accept `%player%`, `%npc%` and, when PlaceholderAPI is installed, all of its placeholders.
 
-## Commande
+## Command
 
-`/npc` (alias `/pnj`, permission `puppeteer.admin.npc`) : `reload`, `list`, `info <id>`,
-`create <id> [type]`, `delete <id>`, `movehere <id>`, `tp <id>`, `rename <id> <nom>`,
-`skin <id> <joueur|url|mirror|none>`, `copy <id> <nouveau>`, `enable <id>`, `disable <id>`, `stats`.
-Les modifications en jeu reecrivent `npcs.yml` puis rechargent seulement le PNJ concerne.
+`/npc` (aliases `/npcs`, `/pnj`, permission `puppeteer.admin.npc`): `reload`, `list`, `info <id>`,
+`create <id> [type]`, `delete <id>`, `movehere <id>`, `tp <id>`, `rename <id> <name>`,
+`skin <id> <player|url|mirror|none>`, `copy <id> <new>`, `enable <id>`, `disable <id>`, `stats`.
+In-game edits rewrite `npcs.yml` and reload only the NPC concerned.
 
-## Compilation
+## Building
 
 ```bash
 mvn package
 ```
 
-Le plugin se trouve dans `target/Puppeteer.jar`. Java 21 est requis.
+The plugin is in `target/Puppeteer.jar`. Java 21 is required.
