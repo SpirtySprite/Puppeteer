@@ -54,3 +54,6 @@ npc:
     - "<muted>┃</muted> <text>Fonctions manquantes :</text> <secondary><missing>"
     - "<muted>┃</muted> <text>Avertissements :</text> <warning><warnings>"
 
+logs:
+  prefix: "<gradient:#F87171:#A78BFA><b>ʟᴏɢs</b></gradient> <muted>▸</muted> "
+  alert: "<logs><icon> <muted><topic></muted> <muted>┃</muted> <text><title><muted>:</muted> <text><summary> <muted>[<secondary>ᴅᴇᴛᴀɪʟs</secondary><muted>]"
