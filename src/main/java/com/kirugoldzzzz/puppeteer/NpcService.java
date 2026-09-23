@@ -216,6 +216,15 @@ public final class NpcService {
         return Optional.ofNullable(disabled.get(id));
     }
 
+    public String idOf(Npc npc) {
+        for (Map.Entry<String, Live> entry : live.entrySet()) {
+            if (entry.getValue().npc() == npc) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     public int activeCount() {
         return live.size();
     }
