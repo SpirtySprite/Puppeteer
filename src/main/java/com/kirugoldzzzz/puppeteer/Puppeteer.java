@@ -1,9 +1,9 @@
 package com.kirugoldzzzz.puppeteer;
 
 import com.foliagui.FoliaGUI;
+import com.kirugoldzzzz.puppeteer.api.PuppeteerApi;
 import com.kirugoldzzzz.puppeteer.common.command.NexusCommand;
 import com.kirugoldzzzz.puppeteer.common.config.ConfigFile;
-import com.kirugoldzzzz.puppeteer.api.PuppeteerApi;
 import com.kirugoldzzzz.puppeteer.common.gui.Guis;
 import com.kirugoldzzzz.puppeteer.common.platform.Telemetry;
 import com.kirugoldzzzz.puppeteer.common.platform.UpdateChecker;

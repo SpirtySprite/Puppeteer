@@ -1,17 +1,15 @@
 package com.kirugoldzzzz.puppeteer;
 
-import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import com.kirugoldzzzz.puppeteer.common.text.Messages;
 import com.kirugoldzzzz.puppeteer.common.text.Mini;
 import com.kirugoldzzzz.puppeteer.common.text.Numbers;
-import com.kirugoldzzzz.puppeteer.VaultEconomy;
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import net.folianpc.api.Actions;
 import net.folianpc.api.NpcAction;
 import net.folianpc.api.NpcClickContext;
 import net.kyori.adventure.text.Component;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

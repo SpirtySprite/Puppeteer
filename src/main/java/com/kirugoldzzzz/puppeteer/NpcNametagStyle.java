@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.puppeteer;
 
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import net.folianpc.api.NametagStyle;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;

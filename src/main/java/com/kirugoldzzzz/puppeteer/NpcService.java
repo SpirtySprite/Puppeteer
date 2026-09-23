@@ -1,13 +1,11 @@
 package com.kirugoldzzzz.puppeteer;
 
-import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
-import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
-import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
 import com.kirugoldzzzz.puppeteer.common.config.ConfigFile;
 import com.kirugoldzzzz.puppeteer.common.item.ItemSpec;
+import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
+import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
-import com.kirugoldzzzz.puppeteer.VaultEconomy;
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
 import net.folianpc.api.ClickType;
 import net.folianpc.api.FoliaNpc;
 import net.folianpc.api.Npc;

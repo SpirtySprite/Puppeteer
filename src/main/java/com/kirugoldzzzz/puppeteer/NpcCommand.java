@@ -1,12 +1,11 @@
 package com.kirugoldzzzz.puppeteer;
 
-import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import com.kirugoldzzzz.puppeteer.common.command.NexusCommand;
 import com.kirugoldzzzz.puppeteer.common.config.Sections;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
 import com.kirugoldzzzz.puppeteer.common.text.Messages;
 import com.kirugoldzzzz.puppeteer.common.text.Mini;
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
 import net.folianpc.api.Stats;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;

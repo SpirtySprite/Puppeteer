@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.puppeteer.common.log;
 
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;

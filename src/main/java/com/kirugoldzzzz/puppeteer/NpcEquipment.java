@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.puppeteer;
 
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
 

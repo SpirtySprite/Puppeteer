@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.puppeteer;
 
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
-
 import net.folianpc.api.NpcPose;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.configuration.ConfigurationSection;
