@@ -3,6 +3,7 @@ prefix: "<gradient:#8B5CF6:#22D3EE><b>ᴘᴜᴘᴘᴇᴛᴇᴇʀ</b></gradient> 
 general:
   no-permission: "<prefix><error><cross></error> <text>Vous n'avez pas la permission de faire cela."
   players-only: "<prefix><error><cross></error> <text>Seuls les joueurs peuvent utiliser cette commande."
+  update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>est disponible <muted>(installée : <current>)</muted> <link>"
 npc:
   unavailable: "<prefix><error><cross></error> <text>Le système de PNJ est indisponible sur ce serveur, consultez la console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/npc <reload|list|info|create|delete|movehere|tp|rename|skin|copy|enable|disable|stats> <muted>| <primary>/npc create <pnj> [type] <muted>| <primary>/npc skin <pnj> <joueur|url|mirror|none> <muted>| <primary>/npc copy <pnj> <nouveau>"

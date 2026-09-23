@@ -3,6 +3,7 @@ prefix: "<gradient:#8B5CF6:#22D3EE><b>ᴘᴜᴘᴘᴇᴛᴇᴇʀ</b></gradient> 
 general:
   no-permission: "<prefix><error><cross></error> <text>You don't have permission to do that."
   players-only: "<prefix><error><cross></error> <text>Only players can use this command."
+  update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>is available <muted>(installed: <current>)</muted> <link>"
 npc:
   unavailable: "<prefix><error><cross></error> <text>The NPC system is unavailable on this server, check the console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅ</muted> <primary>/npc <reload|list|info|create|delete|movehere|tp|rename|skin|copy|enable|disable|stats> <muted>| <primary>/npc create <npc> [type] <muted>| <primary>/npc skin <npc> <player|url|mirror|none> <muted>| <primary>/npc copy <npc> <new>"
