@@ -125,7 +125,34 @@ Texts accept `%player%`, `%npc%` and, when PlaceholderAPI is installed, all of i
 `/npc` (aliases `/npcs`, `/pnj`, permission `puppeteer.admin.npc`): `reload`, `list`, `info <id>`,
 `create <id> [type]`, `delete <id>`, `movehere <id>`, `tp <id>`, `rename <id> <name>`,
 `skin <id> <player|url|mirror|none>`, `copy <id> <new>`, `enable <id>`, `disable <id>`, `stats`.
-In-game edits rewrite `npcs.yml` and reload only the NPC concerned.
+In-game edits rewrite `npcs.yml` and reload only the NPC concerned. `/npc reload` also rereads
+`config.yml` and the language files. Changing `language` takes full effect after a restart.
+
+## Developer API
+
+Add Puppeteer as a `depend` or `softdepend`, then get the service:
+
+```java
+PuppeteerApi.get().ifPresent(puppeteer -> {
+    puppeteer.location("guide").ifPresent(player::teleport);
+    puppeteer.setEnabled("banker", false).thenRun(() -> getLogger().info("banker hidden"));
+});
+```
+
+`PuppeteerApi` lists NPC ids, their state (`ACTIVE`, `PENDING` while the world is not loaded,
+`DISABLED`, `UNKNOWN`), their location and click count. `move`, `setEnabled` and `reload` rewrite
+`npcs.yml` off the main thread and return a `CompletableFuture`. Unknown ids throw
+`IllegalArgumentException`.
+
+`NpcClickEvent` fires when a player clicks an NPC, before its actions run. It carries the NPC id,
+the side (`rightClick()`) and `sneaking()`. Cancelling it skips every action of that click.
+
+## Updates and metrics
+
+On start Puppeteer checks the latest GitHub release and tells the console and players with
+`puppeteer.admin.npc` when a newer version exists. Set `update-checker: false` in `config.yml` to
+turn it off. Anonymous usage statistics go through bStats and follow the global bStats opt-out in
+`plugins/bStats/config.yml`.
 
 ## Building
 

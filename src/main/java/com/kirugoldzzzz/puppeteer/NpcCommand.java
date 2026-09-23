@@ -41,6 +41,8 @@ public final class NpcCommand extends NexusCommand {
             .toList();
 
     private final NpcService service;
+    private Runnable reloadSettings = () -> {
+    };
 
     public NpcCommand(NpcService service) {
         super(PERMISSION, false);
@@ -76,7 +78,12 @@ public final class NpcCommand extends NexusCommand {
         }
     }
 
+    public void onReload(Runnable action) {
+        this.reloadSettings = action;
+    }
+
     private void reload(CommandSender sender) {
+        reloadSettings.run();
         Scheduling.async(() -> report(sender, service.reload(), "npc.reloaded"));
     }
 
