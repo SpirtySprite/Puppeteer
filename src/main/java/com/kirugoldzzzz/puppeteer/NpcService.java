@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
 import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
 import com.kirugoldzzzz.puppeteer.common.config.ConfigFile;
@@ -81,7 +83,7 @@ public final class NpcService {
         }
         List<String> missing = npcs.capabilities().missing();
         if (!missing.isEmpty()) {
-            NexusLog.warn(LogTopic.NPC, "Fonctions indisponibles sur ce serveur : " + String.join(", ", missing));
+            NexusLog.warn(LogTopic.NPC, Tr.t("Fonctions indisponibles sur ce serveur : ") + String.join(", ", missing));
         }
     }
 
@@ -89,7 +91,7 @@ public final class NpcService {
         try {
             return new NpcService(plugin, file, economy, FoliaNpc.create(plugin));
         } catch (RuntimeException failure) {
-            NexusLog.error(LogTopic.NPC, "Système de PNJ indisponible, il reste désactivé", failure);
+            NexusLog.error(LogTopic.NPC, Tr.t("Système de PNJ indisponible, il reste désactivé"), failure);
             return null;
         }
     }
@@ -122,7 +124,7 @@ public final class NpcService {
                 ids.add(id);
                 ConfigurationSection child = section.getConfigurationSection(id);
                 if (child == null) {
-                    warnings.add(id + " : entrée invalide, une section est attendue");
+                    warnings.add(id + Tr.t(" : entrée invalide, une section est attendue"));
                     continue;
                 }
                 NpcDefinition definition = NpcDefinition.parse(id, child, defaults, warnings);
@@ -269,7 +271,7 @@ public final class NpcService {
         try {
             live.put(definition.id(), new Live(definition, fingerprint, spawn(definition, world, warnings)));
         } catch (RuntimeException failure) {
-            warnings.add(definition.id() + " : apparition impossible, " + failure.getMessage());
+            warnings.add(definition.id() + Tr.t(" : apparition impossible, ") + failure.getMessage());
         }
     }
 
@@ -343,7 +345,7 @@ public final class NpcService {
         definition.equipment().forEach((slot, source) -> {
             ItemStack item = item(source);
             if (item == null) {
-                warnings.add(definition.id() + " : objet d'équipement invalide pour " + slot);
+                warnings.add(definition.id() + Tr.t(" : objet d'équipement invalide pour ") + slot);
             } else {
                 builder.equipment(slot, item);
             }
@@ -394,7 +396,7 @@ public final class NpcService {
                 npc.skin(skin);
             }
         }).exceptionally(failure -> {
-            NexusLog.warn(LogTopic.NPC, definition.id() + " : skin introuvable pour \"" + definition.skin().value() + "\"");
+            NexusLog.warn(LogTopic.NPC, definition.id() + Tr.t(" : skin introuvable pour \"") + definition.skin().value() + "\"");
             return null;
         });
     }

@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,34 +17,34 @@ public record NpcActionSpec(NpcTrigger trigger, NpcSneak sneak, NpcActionType ty
 
     public static NpcActionSpec parse(Map<?, ?> raw, String context, List<String> warnings) {
         if (raw == null) {
-            warnings.add(context + " : action vide");
+            warnings.add(context + Tr.t(" : action vide"));
             return null;
         }
         NpcActionType type = NpcActionType.parse(text(raw, "type"));
         if (type == null) {
-            warnings.add(context + " : type d'action inconnu \"" + text(raw, "type") + "\"");
+            warnings.add(context + Tr.t(" : type d'action inconnu \"") + text(raw, "type") + "\"");
             return null;
         }
         NpcTrigger trigger = NpcTrigger.parse(text(raw, "click"));
         if (trigger == null) {
-            warnings.add(context + " : clic inconnu \"" + text(raw, "click")
-                    + "\", attendu LEFT, RIGHT ou BOTH");
+            warnings.add(context + Tr.t(" : clic inconnu \"") + text(raw, "click")
+                    + Tr.t("\", attendu LEFT, RIGHT ou BOTH"));
             return null;
         }
         NpcSneak sneak = NpcSneak.parse(raw.get("sneak"));
         if (sneak == null) {
-            warnings.add(context + " : accroupissement inconnu \"" + raw.get("sneak")
-                    + "\", attendu ANY, SNEAKING ou STANDING");
+            warnings.add(context + Tr.t(" : accroupissement inconnu \"") + raw.get("sneak")
+                    + Tr.t("\", attendu ANY, SNEAKING ou STANDING"));
             return null;
         }
         String value = joined(raw.get("value"));
         if (type.needsValue() && (value == null || value.isBlank())) {
-            warnings.add(context + " : l'action " + type + " demande une valeur");
+            warnings.add(context + " : l'action " + type + Tr.t(" demande une valeur"));
             return null;
         }
         double amount = Math.max(0.0D, number(raw, "amount", 0.0D));
         if (type.needsAmount() && amount <= 0.0D) {
-            warnings.add(context + " : l'action " + type + " demande un montant positif");
+            warnings.add(context + " : l'action " + type + Tr.t(" demande un montant positif"));
             return null;
         }
         int defaultDuration = type == NpcActionType.TITLE ? DEFAULT_TITLE_STAY : DEFAULT_EFFECT_DURATION;

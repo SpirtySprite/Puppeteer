@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import com.kirugoldzzzz.puppeteer.common.text.Messages;
 import com.kirugoldzzzz.puppeteer.common.text.Mini;
 import com.kirugoldzzzz.puppeteer.common.text.Numbers;
@@ -122,7 +124,7 @@ final class NpcActionCompiler {
     private NpcAction sound(NpcActionSpec spec, String context, List<String> warnings) {
         String key = soundKey(spec.value());
         if (key == null) {
-            warnings.add(context + " : son inconnu \"" + spec.value() + "\"");
+            warnings.add(context + Tr.t(" : son inconnu \"") + spec.value() + "\"");
             return null;
         }
         return ctx -> ctx.player().playSound(ctx.player().getLocation(), key, spec.volume(), spec.pitch());
@@ -131,7 +133,7 @@ final class NpcActionCompiler {
     private NpcAction teleport(NpcActionSpec spec, String context, List<String> warnings) {
         String[] parts = spec.value().trim().split("[\\s,]+");
         if (parts.length < 4) {
-            warnings.add(context + " : destination invalide, attendu \"monde x y z [yaw pitch]\"");
+            warnings.add(context + Tr.t(" : destination invalide, attendu \"monde x y z [yaw pitch]\""));
             return null;
         }
         double[] coordinates = new double[5];
@@ -140,7 +142,7 @@ final class NpcActionCompiler {
                 coordinates[index - 1] = Double.parseDouble(parts[index]);
             }
         } catch (NumberFormatException invalid) {
-            warnings.add(context + " : coordonnées de téléportation invalides \"" + spec.value() + "\"");
+            warnings.add(context + Tr.t(" : coordonnées de téléportation invalides \"") + spec.value() + "\"");
             return null;
         }
         String worldName = parts[0];
@@ -161,7 +163,7 @@ final class NpcActionCompiler {
         PotionEffectType type = effectKey == null ? null
                 : RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(effectKey);
         if (type == null) {
-            warnings.add(context + " : effet inconnu \"" + spec.value() + "\"");
+            warnings.add(context + Tr.t(" : effet inconnu \"") + spec.value() + "\"");
             return null;
         }
         int amplifier = Math.max(0, (int) Math.round(spec.amount()) - 1);
@@ -174,11 +176,11 @@ final class NpcActionCompiler {
         try {
             particle = Particle.valueOf(spec.value().trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException unknown) {
-            warnings.add(context + " : particule inconnue \"" + spec.value() + "\"");
+            warnings.add(context + Tr.t(" : particule inconnue \"") + spec.value() + "\"");
             return null;
         }
         if (particle.getDataType() != Void.class) {
-            warnings.add(context + " : la particule " + particle + " demande des données, choisissez-en une autre");
+            warnings.add(context + Tr.t(" : la particule ") + particle + Tr.t(" demande des données, choisissez-en une autre"));
             return null;
         }
         int count = spec.amount() > 0.0D ? (int) Math.round(spec.amount()) : DEFAULT_PARTICLE_COUNT;

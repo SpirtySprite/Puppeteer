@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import net.folianpc.api.NametagStyle;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -29,8 +31,8 @@ public record NpcNametagStyle(int backgroundRgb, int backgroundOpacity, int text
         if (background != null && !background.isBlank()) {
             Integer parsed = color(background);
             if (parsed == null) {
-                warnings.add(context + " : couleur de fond inconnue \"" + background
-                        + "\", attendu #RRGGBB ou un nom comme black");
+                warnings.add(context + Tr.t(" : couleur de fond inconnue \"") + background
+                        + Tr.t("\", attendu #RRGGBB ou un nom comme black"));
             } else {
                 rgb = parsed;
             }
@@ -51,13 +53,13 @@ public record NpcNametagStyle(int backgroundRgb, int backgroundOpacity, int text
     }
 
     public String describe() {
-        StringBuilder text = new StringBuilder(String.format(Locale.ROOT, "fond #%06X à %d%%, texte à %d%%",
+        StringBuilder text = new StringBuilder(String.format(Locale.ROOT, Tr.t("fond #%06X à %d%%, texte à %d%%"),
                 backgroundRgb, backgroundOpacity, textOpacity));
         if (shadow) {
             text.append(", ombre");
         }
         if (seeThrough) {
-            text.append(", visible à travers les murs");
+            text.append(Tr.t(", visible à travers les murs"));
         }
         return text.toString();
     }

@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 public record NpcSkinSource(Kind kind, String value, String signature, boolean mirror) {
@@ -51,7 +53,7 @@ public record NpcSkinSource(Kind kind, String value, String signature, boolean m
 
     public String describe() {
         if (mirror) {
-            return "reflet du joueur";
+            return Tr.t("reflet du joueur");
         }
         return switch (kind) {
             case NONE -> "par défaut";

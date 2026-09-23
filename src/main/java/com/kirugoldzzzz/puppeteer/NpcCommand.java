@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import com.kirugoldzzzz.puppeteer.common.command.NexusCommand;
 import com.kirugoldzzzz.puppeteer.common.config.Sections;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
@@ -154,12 +156,12 @@ public final class NpcCommand extends NexusCommand {
             if (type == EntityType.PLAYER) {
                 section.set("skin", skin);
             }
-            section.set("nametag", List.of("<primary><b>%npc%", "<muted>Clic droit"));
+            section.set("nametag", List.of("<primary><b>%npc%", Tr.t("<muted>Clic droit")));
             section.set("look-at-players", true);
             Map<String, Object> action = new LinkedHashMap<>();
             action.put("click", "RIGHT");
             action.put("type", "MESSAGE");
-            action.put("value", "<primary>%npc% <muted>| <text>Bonjour %player% !");
+            action.put("value", Tr.t("<primary>%npc% <muted>| <text>Bonjour %player% !"));
             section.set("actions", List.of(action));
         }, "npc.created", Mini.value("id", id));
     }

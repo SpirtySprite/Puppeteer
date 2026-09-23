@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -43,7 +45,7 @@ public final class VaultEconomy {
         if (current != null) {
             return current;
         }
-        if (Bukkit.getServer() == null || Bukkit.getPluginManager().getPlugin("Vault") == null) {
+        if (Bukkit.getServer() == null || Bukkit.getPluginManager().getPlugin(Tr.t("Vault")) == null) {
             return null;
         }
         RegisteredServiceProvider<Economy> registration = Bukkit.getServicesManager().getRegistration(Economy.class);

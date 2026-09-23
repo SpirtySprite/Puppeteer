@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import net.folianpc.api.NpcPose;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,18 +38,18 @@ public record NpcDefinition(String id, boolean enabled, String name, EntityType 
     public static NpcDefinition parse(String id, ConfigurationSection section, NpcDefaults defaults,
                                       List<String> warnings) {
         if (!validId(id)) {
-            warnings.add(id + " : identifiant invalide, lettres minuscules, chiffres, _ et - uniquement");
+            warnings.add(id + Tr.t(" : identifiant invalide, lettres minuscules, chiffres, _ et - uniquement"));
             return null;
         }
         ConfigurationSection location = section.getConfigurationSection("location");
         String world = location == null ? null : location.getString("world");
         if (world == null || world.isBlank()) {
-            warnings.add(id + " : position absente, il faut au moins location.world");
+            warnings.add(id + Tr.t(" : position absente, il faut au moins location.world"));
             return null;
         }
         EntityType type = entityType(section.getString("type", "PLAYER"));
         if (type == null) {
-            warnings.add(id + " : type d'entité invalide \"" + section.getString("type") + "\"");
+            warnings.add(id + Tr.t(" : type d'entité invalide \"") + section.getString("type") + "\"");
             return null;
         }
         NamedTextColor glowColor = glowColor(section.getString("appearance.glow-color"), id, warnings);
@@ -150,7 +152,7 @@ public record NpcDefinition(String id, boolean enabled, String name, EntityType 
             color = hex == null ? null : NamedTextColor.nearestTo(hex);
         }
         if (color == null) {
-            warnings.add(id + " : couleur de lueur inconnue \"" + raw + "\"");
+            warnings.add(id + Tr.t(" : couleur de lueur inconnue \"") + raw + "\"");
         }
         return color;
     }
@@ -162,7 +164,7 @@ public record NpcDefinition(String id, boolean enabled, String name, EntityType 
         try {
             return NpcPose.valueOf(raw.trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException unknown) {
-            warnings.add(id + " : pose inconnue \"" + raw + "\", debout par défaut");
+            warnings.add(id + Tr.t(" : pose inconnue \"") + raw + Tr.t("\", debout par défaut"));
             return NpcPose.STANDING;
         }
     }

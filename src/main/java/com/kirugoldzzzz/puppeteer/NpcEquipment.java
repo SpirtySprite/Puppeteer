@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.puppeteer;
 
+import com.kirugoldzzzz.puppeteer.common.text.Tr;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -19,7 +21,7 @@ public record NpcEquipment(String material, ConfigurationSection item) {
         for (String key : section.getKeys(false)) {
             EquipmentSlot slot = slot(key);
             if (slot == null) {
-                warnings.add(id + " : emplacement d'équipement inconnu \"" + key + "\"");
+                warnings.add(id + Tr.t(" : emplacement d'équipement inconnu \"") + key + "\"");
                 continue;
             }
             ConfigurationSection item = section.getConfigurationSection(key);
