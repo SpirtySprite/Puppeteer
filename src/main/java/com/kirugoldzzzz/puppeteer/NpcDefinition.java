@@ -22,7 +22,7 @@ public record NpcDefinition(String id, boolean enabled, String name, EntityType 
                             boolean showInTab, NpcPose pose, boolean baby, Integer variant,
                             String variantName, String villagerProfession, String villagerType,
                             int villagerLevel, Map<EquipmentSlot, NpcEquipment> equipment,
-                            String permission, List<NpcActionSpec> actions) {
+                            String permission, List<NpcActionSpec> actions, NpcPatrol patrol) {
 
     public static final double MIN_SCALE = 0.1D;
     public static final double MAX_SCALE = 16.0D;
@@ -93,7 +93,8 @@ public record NpcDefinition(String id, boolean enabled, String name, EntityType 
                 Math.max(1, Math.min(5, section.getInt("villager.level", 1))),
                 NpcEquipment.read(section.getConfigurationSection("equipment"), id, warnings),
                 blankToNull(section.getString("permission")),
-                NpcActionSpec.parseAll(section.getMapList("actions"), id, warnings));
+                NpcActionSpec.parseAll(section.getMapList("actions"), id, warnings),
+                NpcPatrol.read(section.getConfigurationSection("patrol"), id, warnings));
     }
 
     public static String fingerprint(ConfigurationSection section) {

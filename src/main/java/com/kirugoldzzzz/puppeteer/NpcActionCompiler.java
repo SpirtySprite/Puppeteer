@@ -32,6 +32,8 @@ final class NpcActionCompiler {
 
     private static final int DEFAULT_PARTICLE_COUNT = 20;
     private static final long TICK_MILLIS = 50L;
+    private static final long DIALOGUE_RESET_MILLIS = 60_000L;
+    private static final Map<String, long[]> DIALOGUES = new java.util.concurrent.ConcurrentHashMap<>();
 
     private final VaultEconomy economy;
     private final NpcText text;
@@ -39,6 +41,24 @@ final class NpcActionCompiler {
     NpcActionCompiler(VaultEconomy economy, NpcText text) {
         this.economy = economy;
         this.text = text;
+    }
+
+    private NpcAction dialogue(NpcActionSpec spec, String context) {
+        List<String> lines = List.of(spec.value().split("\n"));
+        return ctx -> {
+            String key = context + "|" + ctx.player().getUniqueId();
+            long now = System.currentTimeMillis();
+            long[] progress = DIALOGUES.compute(key, (ignored, previous) ->
+                    previous == null || now - previous[1] > DIALOGUE_RESET_MILLIS
+                            ? new long[]{0L, now}
+                            : new long[]{(previous[0] + 1) % lines.size(), now});
+            ctx.player().sendMessage(chat(ctx, lines.get((int) progress[0])));
+        };
+    }
+
+    static int dialogueLine(String context, java.util.UUID player) {
+        long[] progress = DIALOGUES.get(context + "|" + player);
+        return progress == null ? -1 : (int) progress[0];
     }
 
     NpcAction compile(NpcActionSpec spec, Location base, String context, List<String> warnings) {
@@ -57,6 +77,9 @@ final class NpcActionCompiler {
                 }
                 return;
             }
+            if (spec.once() && !NpcMemory.active().claim(context, player.getUniqueId())) {
+                return;
+            }
             body.run(ctx);
         };
     }
@@ -64,6 +87,7 @@ final class NpcActionCompiler {
     private NpcAction body(NpcActionSpec spec, Location base, String context, List<String> warnings) {
         return switch (spec.type()) {
             case MESSAGE -> ctx -> ctx.player().sendMessage(chat(ctx, spec.value()));
+            case DIALOGUE -> dialogue(spec, context);
             case BROADCAST -> ctx -> Bukkit.getServer().sendMessage(chat(ctx, spec.value()));
             case ACTIONBAR -> ctx -> ctx.player().sendActionBar(chat(ctx, spec.value()));
             case TITLE -> title(spec);

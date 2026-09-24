@@ -5,6 +5,10 @@ general:
   players-only: "<prefix><error><cross></error> <text>Seuls les joueurs peuvent utiliser cette commande."
   update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>est disponible <muted>(installée : <current>)</muted> <link>"
 npc:
+  forgotten: "<prefix><success><check></success> <secondary><amount></secondary> <text>action(s) unique(s) de <secondary><id></secondary> <text>remise(s) à zéro."
+  path-usage: "<prefix><secondary>⌨</secondary> <primary>/npc path add <id></primary> <muted>|</muted> <primary>/npc path clear <id>"
+  path-added: "<prefix><success><check></success> <text>Point <secondary><point></secondary> <text>ajouté à la patrouille de <secondary><id></secondary>."
+  path-cleared: "<prefix><success><check></success> <text>Patrouille de <secondary><id></secondary> <text>supprimée."
   import-usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/npc import <source> <muted>| sources : <text><sources>"
   import-missing: "<prefix><error><cross></error> <text>Dossier de <secondary><plugin></secondary> introuvable : <muted><folder>"
   import-started: "<prefix><secondary>⌛</secondary> <text>Import depuis <secondary><plugin></secondary> en cours..."

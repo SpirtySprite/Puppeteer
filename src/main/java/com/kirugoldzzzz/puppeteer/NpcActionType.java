@@ -18,7 +18,8 @@ public enum NpcActionType {
     GIVE_MONEY(false, true),
     TAKE_MONEY(false, true),
     REQUIRE_PERMISSION(true, false),
-    SWING(false, false);
+    SWING(false, false),
+    DIALOGUE(true, false);
 
     private final boolean needsValue;
     private final boolean needsAmount;

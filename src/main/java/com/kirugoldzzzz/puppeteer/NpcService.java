@@ -386,6 +386,10 @@ public final class NpcService {
             }
         }
         fetchSkin(definition, npc);
+        if (definition.patrol().active()) {
+            definition.patrol().start(npc, definition.patrol().route(world, definition.x(), definition.y(),
+                    definition.z(), definition.yaw(), definition.pitch()));
+        }
         return npc;
     }
 

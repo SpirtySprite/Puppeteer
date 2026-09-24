@@ -209,6 +209,12 @@ npcs:
     appearance:
       nametag-visible: true
       collidable: false
+    patrol:
+      speed: 0.8
+      pause-ticks: 60
+      points:
+        - "4.5 64 4.5"
+        - "4.5 64 0.5"
     actions:
       - click: RIGHT
         type: SOUND
@@ -218,3 +224,14 @@ npcs:
         type: PARTICLE
         value: HEART
         amount: 6
+      - click: LEFT
+        type: DIALOGUE
+        value:
+          - "<primary>Minuit</primary> <text>s'étire et bâille."
+          - "<primary>Minuit</primary> <text>se frotte contre vos jambes."
+          - "<primary>Minuit</primary> <text>vous regarde, puis s'en va."
+      - click: LEFT
+        sneak: true
+        type: CONSOLE_COMMAND
+        once: true
+        value: "give %player% cod 3"

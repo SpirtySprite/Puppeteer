@@ -33,6 +33,9 @@ public final class Puppeteer extends JavaPlugin {
         Guis.installTheme();
         Tr.seedLocalized(this, "npcs.yml");
         ConfigFile npcs = new ConfigFile(this, "npcs.yml", "npcs").load();
+        NpcMemory memory = new NpcMemory(new java.io.File(getDataFolder(), "memory.yml"));
+        memory.load();
+        NpcMemory.activate(memory);
         VaultEconomy economy = new VaultEconomy();
         service = NpcService.create(this, npcs, economy);
         if (service == null) {

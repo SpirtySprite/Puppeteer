@@ -34,9 +34,9 @@ public final class NpcCommand extends CommandBase {
 
     private static final String PERMISSION = "puppeteer.admin.npc";
     private static final List<String> ACTIONS = List.of("reload", "list", "info", "create", "delete",
-            "movehere", "tp", "rename", "skin", "copy", "enable", "disable", "stats", "import");
+            "movehere", "tp", "rename", "skin", "copy", "enable", "disable", "stats", "import", "forget", "path");
     private static final List<String> ID_ARGUMENT = List.of("info", "delete", "movehere", "tp", "rename",
-            "skin", "copy", "enable", "disable");
+            "skin", "copy", "enable", "disable", "forget");
     private static final List<String> SKIN_OPTIONS = List.of("mirror", "none");
     private static final List<String> TYPES = Arrays.stream(EntityType.values())
             .filter(type -> type == EntityType.PLAYER || type.isAlive())
@@ -78,8 +78,59 @@ public final class NpcCommand extends CommandBase {
             case "disable", "desactiver" -> toggle(sender, args, false);
             case "stats" -> stats(sender);
             case "import", "importer" -> importFrom(sender, args);
+            case "forget", "oublier" -> forget(sender, args);
+            case "path", "chemin" -> path(sender, args);
             default -> Messages.send(sender, "npc.usage");
         }
+    }
+
+    private void forget(CommandSender sender, String[] args) {
+        Optional<String> id = existing(sender, args, 2);
+        if (id.isEmpty()) {
+            return;
+        }
+        java.util.UUID target = null;
+        if (args.length > 2) {
+            org.bukkit.OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[2]);
+            if (player == null) {
+                Messages.send(sender, "general.unknown-player", Mini.value("player", args[2]));
+                return;
+            }
+            target = player.getUniqueId();
+        }
+        int cleared = NpcMemory.active().forget(id.get(), target);
+        Messages.send(sender, "npc.forgotten", Mini.value("id", id.get()), Mini.value("amount", String.valueOf(cleared)));
+    }
+
+    private void path(CommandSender sender, String[] args) {
+        if (args.length < 3 || !List.of("add", "clear").contains(args[1].toLowerCase(Locale.ROOT))) {
+            Messages.send(sender, "npc.path-usage");
+            return;
+        }
+        String[] shifted = java.util.Arrays.copyOfRange(args, 1, args.length);
+        Optional<String> id = existing(sender, shifted, 2);
+        if (id.isEmpty()) {
+            return;
+        }
+        if (args[1].equalsIgnoreCase("clear")) {
+            edit(sender, root -> section(root, id.get()).set("patrol", null), "npc.path-cleared", Mini.value("id", id.get()));
+            return;
+        }
+        Player player = player(sender);
+        if (player == null) {
+            return;
+        }
+        Location here = player.getLocation();
+        String point = round(here.getX()) + " " + round(here.getY()) + " " + round(here.getZ());
+        edit(sender, root -> {
+            ConfigurationSection patrol = section(root, id.get()).getConfigurationSection("patrol");
+            if (patrol == null) {
+                patrol = section(root, id.get()).createSection("patrol");
+            }
+            List<String> points = new ArrayList<>(patrol.getStringList("points"));
+            points.add(point);
+            patrol.set("points", points);
+        }, "npc.path-added", Mini.value("id", id.get()), Mini.value("point", point));
     }
 
     private void importFrom(CommandSender sender, String[] args) {

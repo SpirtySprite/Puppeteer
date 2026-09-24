@@ -9,7 +9,7 @@ import java.util.Map;
 public record NpcActionSpec(NpcTrigger trigger, NpcSneak sneak, NpcActionType type, String value,
                             String subtitle, double amount, int duration, int fadeIn, int fadeOut,
                             float volume, float pitch, long delayTicks, String permission,
-                            String denyMessage) {
+                            String denyMessage, boolean once) {
 
     public static final long MAX_DELAY_TICKS = 72_000L;
     public static final int DEFAULT_TITLE_STAY = 60;
@@ -56,7 +56,8 @@ public record NpcActionSpec(NpcTrigger trigger, NpcSneak sneak, NpcActionType ty
                 (float) clamp(number(raw, "pitch", 1.0D), 0.5D, 2.0D),
                 (long) clamp(number(raw, "delay", 0), 0, MAX_DELAY_TICKS),
                 blankToNull(text(raw, "permission")),
-                blankToNull(joined(raw.get("deny-message"))));
+                blankToNull(joined(raw.get("deny-message"))),
+                Boolean.parseBoolean(String.valueOf(raw.get("once"))));
     }
 
     public static List<NpcActionSpec> parseAll(List<Map<?, ?>> raw, String id, List<String> warnings) {
