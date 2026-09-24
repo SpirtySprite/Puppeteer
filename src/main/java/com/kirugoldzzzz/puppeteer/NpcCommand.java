@@ -1,9 +1,9 @@
 package com.kirugoldzzzz.puppeteer;
 
-import com.kirugoldzzzz.puppeteer.common.command.NexusCommand;
+import com.kirugoldzzzz.puppeteer.common.command.CommandBase;
 import com.kirugoldzzzz.puppeteer.common.config.Sections;
 import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
-import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
+import com.kirugoldzzzz.puppeteer.common.log.PluginLog;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
 import com.kirugoldzzzz.puppeteer.common.text.Messages;
 import com.kirugoldzzzz.puppeteer.common.text.Mini;
@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public final class NpcCommand extends NexusCommand {
+public final class NpcCommand extends CommandBase {
 
     private static final String PERMISSION = "puppeteer.admin.npc";
     private static final List<String> ACTIONS = List.of("reload", "list", "info", "create", "delete",
@@ -111,7 +111,7 @@ public final class NpcCommand extends NexusCommand {
                 }
             });
             for (String warning : warnings) {
-                NexusLog.warn(LogTopic.NPC, "[" + result.source() + "] " + warning);
+                PluginLog.warn(LogTopic.NPC, "[" + result.source() + "] " + warning);
             }
             Messages.send(sender, "npc.import-done", Mini.value("plugin", source.get().plugin()),
                     Mini.value("amount", String.valueOf(written.size())));

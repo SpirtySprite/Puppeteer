@@ -3,7 +3,7 @@ package com.kirugoldzzzz.puppeteer;
 import com.kirugoldzzzz.puppeteer.common.config.ConfigFile;
 import com.kirugoldzzzz.puppeteer.common.item.ItemSpec;
 import com.kirugoldzzzz.puppeteer.common.log.LogTopic;
-import com.kirugoldzzzz.puppeteer.common.log.NexusLog;
+import com.kirugoldzzzz.puppeteer.common.log.PluginLog;
 import com.kirugoldzzzz.puppeteer.common.scheduler.Scheduling;
 import com.kirugoldzzzz.puppeteer.common.text.Tr;
 import net.folianpc.api.ClickType;
@@ -81,7 +81,7 @@ public final class NpcService {
         }
         List<String> missing = npcs.capabilities().missing();
         if (!missing.isEmpty()) {
-            NexusLog.warn(LogTopic.NPC, Tr.t("Fonctions indisponibles sur ce serveur : ") + String.join(", ", missing));
+            PluginLog.warn(LogTopic.NPC, Tr.t("Fonctions indisponibles sur ce serveur : ") + String.join(", ", missing));
         }
     }
 
@@ -89,7 +89,7 @@ public final class NpcService {
         try {
             return new NpcService(plugin, file, economy, FoliaNpc.create(plugin));
         } catch (RuntimeException failure) {
-            NexusLog.error(LogTopic.NPC, Tr.t("Système de PNJ indisponible, il reste désactivé"), failure);
+            PluginLog.error(LogTopic.NPC, Tr.t("Système de PNJ indisponible, il reste désactivé"), failure);
             return null;
         }
     }
@@ -163,7 +163,7 @@ public final class NpcService {
 
         knownIds = List.copyOf(ids);
         lastWarnings = List.copyOf(warnings);
-        warnings.forEach(warning -> NexusLog.warn(LogTopic.NPC, warning));
+        warnings.forEach(warning -> PluginLog.warn(LogTopic.NPC, warning));
         return new NpcLoadReport(live.size(), plan.spawn().size(), plan.respawn().size(),
                 plan.remove().size(), plan.keep().size(), restyled, pending.size(), disabled.size(),
                 List.copyOf(warnings));
@@ -176,7 +176,7 @@ public final class NpcService {
                 place(entry.definition(), entry.fingerprint(), warnings);
             }
         }
-        warnings.forEach(warning -> NexusLog.warn(LogTopic.NPC, warning));
+        warnings.forEach(warning -> PluginLog.warn(LogTopic.NPC, warning));
     }
 
     public synchronized void close() {
@@ -403,7 +403,7 @@ public final class NpcService {
                 npc.skin(skin);
             }
         }).exceptionally(failure -> {
-            NexusLog.warn(LogTopic.NPC, definition.id() + Tr.t(" : skin introuvable pour \"") + definition.skin().value() + "\"");
+            PluginLog.warn(LogTopic.NPC, definition.id() + Tr.t(" : skin introuvable pour \"") + definition.skin().value() + "\"");
             return null;
         });
     }
